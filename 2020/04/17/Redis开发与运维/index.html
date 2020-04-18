@@ -20,29 +20,33 @@
     var CONFIG = {"hostname":"supermoonie.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="supermoonie的笔记">
-<meta property="og:url" content="https://supermoonie.github.io/index.html">
+  <meta name="description" content="初识RedisRedis特性 速度快 10万&#x2F;秒 数据存放于内存中 C语言编写 单线程，避免多线程产生的竞争问题   基于键值对的数据结构服务器 丰富的功能 键过期功能 发布订阅功能 支持Lua 脚本 提供了简单的事务 提供了流水线（Pipeline）功能   简单稳定 客户端语言多 持久化：RDB 和 AOF 主从复制 高可用和分布式  用好Redis的建议 勿当作黑盒使用 阅读源码  Redi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis开发与运维">
+<meta property="og:url" content="https://supermoonie.github.io/2020/04/17/Redis%E5%BC%80%E5%8F%91%E4%B8%8E%E8%BF%90%E7%BB%B4/index.html">
 <meta property="og:site_name" content="supermoonie的笔记">
+<meta property="og:description" content="初识RedisRedis特性 速度快 10万&#x2F;秒 数据存放于内存中 C语言编写 单线程，避免多线程产生的竞争问题   基于键值对的数据结构服务器 丰富的功能 键过期功能 发布订阅功能 支持Lua 脚本 提供了简单的事务 提供了流水线（Pipeline）功能   简单稳定 客户端语言多 持久化：RDB 和 AOF 主从复制 高可用和分布式  用好Redis的建议 勿当作黑盒使用 阅读源码  Redi">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-17T14:30:11.278Z">
+<meta property="article:modified_time" content="2020-04-17T14:30:11.278Z">
 <meta property="article:author" content="supermoonie">
 <meta property="article:tag" content="supermoonie">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://supermoonie.github.io/">
+<link rel="canonical" href="https://supermoonie.github.io/2020/04/17/Redis%E5%BC%80%E5%8F%91%E4%B8%8E%E8%BF%90%E7%BB%B4/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>supermoonie的笔记</title>
+  <title>Redis开发与运维 | supermoonie的笔记</title>
   
 
 
@@ -185,9 +189,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -203,10 +208,9 @@
       <meta itemprop="name" content="supermoonie的笔记">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/04/17/Redis%E5%BC%80%E5%8F%91%E4%B8%8E%E8%BF%90%E7%BB%B4/" class="post-title-link" itemprop="url">Redis开发与运维</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          Redis开发与运维
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -229,7 +233,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="初识Redis"><a href="#初识Redis" class="headerlink" title="初识Redis"></a>初识Redis</h2><h3 id="Redis特性"><a href="#Redis特性" class="headerlink" title="Redis特性"></a>Redis特性</h3><ul>
+        <h2 id="初识Redis"><a href="#初识Redis" class="headerlink" title="初识Redis"></a>初识Redis</h2><h3 id="Redis特性"><a href="#Redis特性" class="headerlink" title="Redis特性"></a>Redis特性</h3><ul>
 <li>速度快<ul>
 <li>10万/秒</li>
 <li>数据存放于内存中</li>
@@ -868,91 +872,30 @@
 <li>部分Redis 的客户端根本不支持这种方式，即使支持，在开发时来回切换数字形势的数据库，容易弄乱</li>
 </ul>
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://supermoonie.github.io/2020/04/17/hello-world/">
+        
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="supermoonie">
-      <meta itemprop="description" content="">
-    </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="supermoonie的笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/04/17/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-04-17 00:33:20" itemprop="dateCreated datePublished" datetime="2020-04-17T00:33:20+08:00">2020-04-17</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-      
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/17/hello-world/" rel="prev" title="Hello World">
+      <i class="fa fa-chevron-left"></i> Hello World
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
-  
-
-
   
 
 
@@ -1005,6 +948,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#初识Redis"><span class="nav-number">1.</span> <span class="nav-text">初识Redis</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis特性"><span class="nav-number">1.1.</span> <span class="nav-text">Redis特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用好Redis的建议"><span class="nav-number">1.2.</span> <span class="nav-text">用好Redis的建议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-基本操作"><span class="nav-number">1.3.</span> <span class="nav-text">Redis 基本操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-版本"><span class="nav-number">1.4.</span> <span class="nav-text">Redis 版本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第-2-章-API的理解和使用"><span class="nav-number">2.</span> <span class="nav-text">第 2 章 API的理解和使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、全局命令"><span class="nav-number">2.1.</span> <span class="nav-text">1、全局命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、数据结构和内部编码"><span class="nav-number">2.2.</span> <span class="nav-text">2、数据结构和内部编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、单线程架构"><span class="nav-number">2.3.</span> <span class="nav-text">3、单线程架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、字符串"><span class="nav-number">2.4.</span> <span class="nav-text">4、字符串</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-字符串类型常用命令"><span class="nav-number">2.4.1.</span> <span class="nav-text">4.1 字符串类型常用命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-字符串类型不常用命令"><span class="nav-number">2.4.2.</span> <span class="nav-text">4.2 字符串类型不常用命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-字符串内部编码"><span class="nav-number">2.4.3.</span> <span class="nav-text">4.3 字符串内部编码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5、哈希"><span class="nav-number">2.5.</span> <span class="nav-text">5、哈希</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1-哈希命令"><span class="nav-number">2.5.1.</span> <span class="nav-text">5.1 哈希命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2-内部编码"><span class="nav-number">2.5.2.</span> <span class="nav-text">5.2 内部编码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6、列表"><span class="nav-number">2.6.</span> <span class="nav-text">6、列表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-1-列表的两个特点："><span class="nav-number">2.6.1.</span> <span class="nav-text">6.1 列表的两个特点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2-命令"><span class="nav-number">2.6.2.</span> <span class="nav-text">6.2 命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-3-内部编码"><span class="nav-number">2.6.3.</span> <span class="nav-text">6.3 内部编码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-4-使用场景"><span class="nav-number">2.6.4.</span> <span class="nav-text">6.4 使用场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7、集合"><span class="nav-number">2.7.</span> <span class="nav-text">7、集合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-1-命令"><span class="nav-number">2.7.1.</span> <span class="nav-text">7.1 命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-2-内部编码"><span class="nav-number">2.7.2.</span> <span class="nav-text">7.2 内部编码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-3-使用场景"><span class="nav-number">2.7.3.</span> <span class="nav-text">7.3 使用场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8、有序集合"><span class="nav-number">2.8.</span> <span class="nav-text">8、有序集合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#8-1-命令"><span class="nav-number">2.8.1.</span> <span class="nav-text">8.1 命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-2-内部编码"><span class="nav-number">2.8.2.</span> <span class="nav-text">8.2 内部编码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-3-使用场景"><span class="nav-number">2.8.3.</span> <span class="nav-text">8.3 使用场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9、键管理"><span class="nav-number">2.9.</span> <span class="nav-text">9、键管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#9-1-单个键管理"><span class="nav-number">2.9.1.</span> <span class="nav-text">9.1 单个键管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-2-遍历键"><span class="nav-number">2.9.2.</span> <span class="nav-text">9.2 遍历键</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-3-数据库管理"><span class="nav-number">2.9.3.</span> <span class="nav-text">9.3 数据库管理</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
