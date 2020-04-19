@@ -17,18 +17,18 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"supermoonie.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"supermoonie.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="初识RedisRedis特性 速度快 10万&#x2F;秒 数据存放于内存中 C语言编写 单线程，避免多线程产生的竞争问题">
+  <meta name="description" content="初识RedisRedis特性 速度快：10万&#x2F;秒 基于键值对的数据结构服务器 丰富的功能 简单稳定 客户端语言多 持久化：RDB 和 AOF 主从复制 高可用和分布式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis开发与运维">
 <meta property="og:url" content="https://supermoonie.github.io/2020/04/17/Redis%E5%BC%80%E5%8F%91%E4%B8%8E%E8%BF%90%E7%BB%B4/index.html">
 <meta property="og:site_name" content="supermoonie的笔记">
-<meta property="og:description" content="初识RedisRedis特性 速度快 10万&#x2F;秒 数据存放于内存中 C语言编写 单线程，避免多线程产生的竞争问题">
+<meta property="og:description" content="初识RedisRedis特性 速度快：10万&#x2F;秒 基于键值对的数据结构服务器 丰富的功能 简单稳定 客户端语言多 持久化：RDB 和 AOF 主从复制 高可用和分布式">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-04-17T14:37:20.000Z">
-<meta property="article:modified_time" content="2020-04-18T15:37:09.392Z">
+<meta property="article:modified_time" content="2020-04-19T01:56:07.003Z">
 <meta property="article:author" content="supermoonie">
 <meta property="article:tag" content="Redis">
 <meta name="twitter:card" content="summary">
@@ -243,40 +243,41 @@
 
       
         <h2 id="初识Redis"><a href="#初识Redis" class="headerlink" title="初识Redis"></a>初识Redis</h2><h3 id="Redis特性"><a href="#Redis特性" class="headerlink" title="Redis特性"></a>Redis特性</h3><ul>
-<li>速度快<ul>
-<li>10万/秒</li>
+<li>速度快：10万/秒</li>
+<li>基于键值对的数据结构服务器</li>
+<li>丰富的功能</li>
+<li>简单稳定</li>
+<li>客户端语言多</li>
+<li>持久化：RDB 和 AOF</li>
+<li>主从复制</li>
+<li>高可用和分布式<a id="more"></a>
+
+</li>
+</ul>
+<p>速度快的原因：</p>
+<ul>
 <li>数据存放于内存中</li>
 <li>C语言编写</li>
-<li>单线程，避免多线程产生的竞争问题<a id="more"></a></li>
+<li>单线程，避免多线程产生的竞争问题</li>
 </ul>
-</li>
-<li>基于键值对的数据结构服务器</li>
-<li>丰富的功能<ul>
+<p>Reids的功能：</p>
+<ul>
 <li>键过期功能</li>
 <li>发布订阅功能</li>
 <li>支持Lua 脚本</li>
 <li>提供了简单的事务</li>
 <li>提供了流水线（Pipeline）功能</li>
 </ul>
-</li>
-<li>简单稳定</li>
-<li>客户端语言多</li>
-<li>持久化：RDB 和 AOF</li>
-<li>主从复制</li>
-<li>高可用和分布式</li>
-</ul>
 <h3 id="用好Redis的建议"><a href="#用好Redis的建议" class="headerlink" title="用好Redis的建议"></a>用好Redis的建议</h3><ol>
 <li>勿当作黑盒使用</li>
 <li>阅读源码</li>
 </ol>
-<h3 id="Redis-基本操作"><a href="#Redis-基本操作" class="headerlink" title="Redis 基本操作"></a>Redis 基本操作</h3><ol>
-<li>安装<ul>
+<h3 id="Redis-基本操作"><a href="#Redis-基本操作" class="headerlink" title="Redis 基本操作"></a>Redis 基本操作</h3><h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><ul>
 <li>Linux 上通过源码安装</li>
 <li>Mac 上通过Brew 安装</li>
 </ul>
-</li>
-<li>配置、启动、操作、关闭<ul>
-<li>Redis 可执行文件说明<table>
+<h4 id="配置、启动、操作、关闭"><a href="#配置、启动、操作、关闭" class="headerlink" title="配置、启动、操作、关闭"></a>配置、启动、操作、关闭</h4><p>Redis 可执行文件说明：</p>
+<table>
 <thead>
 <tr>
 <th>可执行文件</th>
@@ -308,8 +309,8 @@
 <td>启动 Redis Sentinel</td>
 </tr>
 </tbody></table>
-</li>
-<li>Redis 基础配置<table>
+<p>Redis 基础配置：</p>
+<table>
 <thead>
 <tr>
 <th>配置名</th>
@@ -333,18 +334,12 @@
 <td>是否以守护进程的方式启动Redis</td>
 </tr>
 </tbody></table>
-</li>
-<li>停止 Redis 服务<br><code>redis-cli shutdown</code> 用来停止Redis 服务，三点注意：<ul>
+<p>停止 Redis 服务：<br><code>redis-cli shutdown</code> 用来停止Redis 服务，三点注意：</p>
+<ul>
 <li>Redis 关闭的过程：断开与客户端的连接、持久化文件生成，是一种相对优雅的关闭方式</li>
 <li>除了<code>shutdown</code> 命令外，还可以通过<code>kill</code> 进程号的方式关掉Redis，但不可使用 <code>kill -9</code> 强制杀死Redis服务，不但不会做持久化操作，还会造成缓冲区等资源不能被优雅关闭，极端情况下会造成AOF和复制丢失数据的情况。</li>
-<li><code>shutdown</code> 还有一个参数，代表是否在关闭Redis前，生成持久化文件：<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli shutdown nosave|save</span><br></pre></td></tr></table></figure>
-
-</li>
+<li><code>shutdown</code> 还有一个参数，代表是否在关闭Redis前，生成持久化文件：<code>redis-cli shutdown nosave|save</code></li>
 </ul>
-</li>
-</ul>
-</li>
-</ol>
 <h3 id="Redis-版本"><a href="#Redis-版本" class="headerlink" title="Redis 版本"></a>Redis 版本</h3><p>  版本号第二位如果是奇数为非稳定版本，偶数代表稳定版本</p>
 <h2 id="API的理解和使用"><a href="#API的理解和使用" class="headerlink" title="API的理解和使用"></a>API的理解和使用</h2><h3 id="全局命令"><a href="#全局命令" class="headerlink" title="全局命令"></a>全局命令</h3><table>
 <thead>
@@ -386,7 +381,7 @@
 <td>查询内部编码</td>
 </tr>
 </tbody></table>
-<h3 id="数据结构和内部编码"><a href="#数据结构和内部编码" class="headerlink" title="数据结构和内部编码"></a>数据结构和内部编码</h3>  <pre class="mermaid">  graph TB
+<h3 id="数据结构和内部编码"><a href="#数据结构和内部编码" class="headerlink" title="数据结构和内部编码"></a>数据结构和内部编码</h3><pre class="mermaid">  graph TB
     key --> string
     key --> hash
     key --> list
@@ -403,12 +398,18 @@
     set --> intset
     zset --> skiplist
     zset --> ziplist_3[ziplist]</pre>
-<p>  Redis这样设计的好处：</p>
+
+<p>Redis这样设计的好处：</p>
 <ul>
 <li>可以改进内部编码，对外数据结构和命令没影响，例如Reids3.2的quicklist，结合了 ziplist 和 linkedlist 两者的优势</li>
 <li>多种内部编码实现可以在不同场景下发挥各自的优势</li>
 </ul>
-<h3 id="单线程架构"><a href="#单线程架构" class="headerlink" title="单线程架构"></a>单线程架构</h3><p>  单线程为什么这么快？<br>    - 纯内存访问<br>    - 非阻塞I/O<br>    - 单线程避免了线程切换和竞态的消耗</p>
+<h3 id="单线程架构"><a href="#单线程架构" class="headerlink" title="单线程架构"></a>单线程架构</h3><p>单线程为什么这么快？</p>
+<ul>
+<li>纯内存访问</li>
+<li>非阻塞I/O</li>
+<li>单线程避免了线程切换和竞态的消耗</li>
+</ul>
 <h3 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h3><h4 id="字符串类型常用命令"><a href="#字符串类型常用命令" class="headerlink" title="字符串类型常用命令"></a>字符串类型常用命令</h4><table>
 <thead>
 <tr>
@@ -604,17 +605,14 @@
 </ul>
 <h4 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h4><ul>
 <li>消息队列</li>
-<li>文章列表<ul>
+<li>文章列表</li>
 <li>lpush + lpop = Stack（栈）</li>
 <li>lpush + rpop = Queue（队列）</li>
 <li>lpush + ltrim = Capped Collection（有限集合）</li>
 <li>lpush + brpop = Message Queue（消息队列）</li>
 </ul>
-</li>
-</ul>
 <h3 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h3><p>  Redis 除了支持集合内的增删改查，同时还支持多个结合取交集、并集、差集。</p>
-<h4 id="命令-1"><a href="#命令-1" class="headerlink" title="命令"></a>命令</h4><ul>
-<li><p>集合内操作</p>
+<h4 id="命令-1"><a href="#命令-1" class="headerlink" title="命令"></a>命令</h4><p>集合内操作：</p>
 <table>
 <thead>
 <tr>
@@ -651,8 +649,7 @@
 <td>获取所有元素</td>
 </tr>
 </tbody></table>
-</li>
-<li><p>集合间操作</p>
+<p>集合间操作：</p>
 <table>
 <thead>
 <tr>
@@ -678,8 +675,6 @@
 </tr>
 </tbody></table>
 <p>集合间的运算在元素较多的情况下会比较耗时，Redis 提供了 store 命令将集合间交集、并集、差集的结果保存在 destination key 中。</p>
-</li>
-</ul>
 <h4 id="内部编码-2"><a href="#内部编码-2" class="headerlink" title="内部编码"></a>内部编码</h4><ul>
 <li>intset（整数集合）：当集合中的元素都是整数且元素个数小于set-max-intset-entries配置（默认512个）时，Redis使用intset 作为集合的内部实现</li>
 <li>hashtable（哈希表）：当集合类型无法满足intset 条件时，Redis 会使用hashtable 作为集合的内部实现</li>
@@ -688,8 +683,7 @@
 <li>标签</li>
 </ul>
 <h3 id="有序集合"><a href="#有序集合" class="headerlink" title="有序集合"></a>有序集合</h3><p>  集合内元素不可重复，但可以排序。它给每个元素设置一个分数（score）作为排序的依据。</p>
-<h4 id="命令-2"><a href="#命令-2" class="headerlink" title="命令"></a>命令</h4><ul>
-<li><p>集合内</p>
+<h4 id="命令-2"><a href="#命令-2" class="headerlink" title="命令"></a>命令</h4><p>集合内：</p>
 <table>
 <thead>
 <tr>
@@ -722,8 +716,8 @@
 <td>增加成员的分数</td>
 </tr>
 <tr>
-<td>zrange zrevrange key start end [withscores] 返回指定排名范围的成员</td>
-<td></td>
+<td>zrange zrevrange key start end [withscores]</td>
+<td>返回指定排名范围的成员</td>
 </tr>
 <tr>
 <td>zrangebyscore zrevrangebyscore key max min [withscores] [limit offset count]</td>
@@ -749,10 +743,9 @@
 <li>ch：返回此次操作后，有序集合元素和分数变化的个数</li>
 <li>incr：对score做增加，相当于zincrby</li>
 </ul>
-</li>
-<li><p>集合间的操作</p>
+<p>集合间的操作</p>
 <ul>
-<li>交集：<code>zinterstore destination numkeys key [key ...] [weights weight [weight ...]] [aggregate sum|min|max]</code><ul>
+<li>交集：<br><code>zinterstore destination numkeys key [key ...] [weights weight [weight ...]] [aggregate sum|min|max]</code><ul>
 <li>destination：交集计算结果保存在这个键</li>
 <li>numkeys：需要做交集计算键的个数</li>
 <li>key[key …]：需要做交集计算的键</li>
@@ -760,9 +753,7 @@
 <li>aggregate sum|min|max：计算成员交集后，分值可以按照sum、min、max 做汇总，默认是sum</li>
 </ul>
 </li>
-<li>并集：<code>zunionstore destination numkeys key [key ...] [weights weight [weight ...]] [aggregate sum|min|max]</code></li>
-</ul>
-</li>
+<li>并集：<br><code>zunionstore destination numkeys key [key ...] [weights weight [weight ...]] [aggregate sum|min|max]</code></li>
 </ul>
 <h4 id="内部编码-3"><a href="#内部编码-3" class="headerlink" title="内部编码"></a>内部编码</h4><ul>
 <li>ziplist（压缩列表）：当有序元素的元素个数小于zset-max-ziplist-entries配置（默认128个），同时每个元素的值都小于zset-max-ziplist-value配置（默认64字节）时，Redis会使用ziplist 作为有序集合的内部实现</li>
@@ -824,36 +815,17 @@
 <td>migrate host port key|”” destination-db timeout [copy] [replace] [keys key [key …]]</td>
 <td>Redis 实例间进行数据迁移</td>
 </tr>
-<tr>
-<td>Redis过期命令注意点：</td>
-<td></td>
-</tr>
-<tr>
-<td>- expire key的键不存在，返回结果为 0</td>
-<td></td>
-</tr>
-<tr>
-<td>- 过期时间如果为负值，键会立即被删除</td>
-<td></td>
-</tr>
-<tr>
-<td>- persist 可以将键的过期时间清除</td>
-<td></td>
-</tr>
-<tr>
-<td>- 对于字符串类型键，set 命令会去掉过期时间</td>
-<td></td>
-</tr>
-<tr>
-<td>- Redis 不支持二级数据结构内部元素的过期功能</td>
-<td></td>
-</tr>
-<tr>
-<td>- setex 命令作为set+expire的组合，不但是原子操作，同时减少了一次网络通讯的时间</td>
-<td></td>
-</tr>
 </tbody></table>
-<p>  migrate 参数：</p>
+<p>Redis过期命令注意点：</p>
+<ul>
+<li>expire key的键不存在，返回结果为 0</li>
+<li>过期时间如果为负值，键会立即被删除</li>
+<li>persist 可以将键的过期时间清除</li>
+<li>对于字符串类型键，set 命令会去掉过期时间</li>
+<li>Redis 不支持二级数据结构内部元素的过期功能</li>
+<li>setex 命令作为set+expire的组合，不但是原子操作，同时减少了一次网络通讯的时间</li>
+</ul>
+<p>migrate 参数：</p>
 <ul>
 <li>host：目标Redis 的IP地址</li>
 <li>port：目标Redis 的端口</li>
@@ -874,10 +846,11 @@
 <li><code>scan cursor [match pattern] [count number]</code>：渐进式遍历<ul>
 <li>curosr：必须参数，每次scan 遍历完都会返回当前游标的值，知道游标值为0，表示遍历结束</li>
 <li>match pattern：可选参数，匹配正则</li>
-<li>count number：可选参数，每次要遍历的键个数，默认是 10<br>除了scan 以外，Redis还提供了面向哈希、集合、有序列表的扫描遍历命令：hscan、sscan、zscan</li>
+<li>count number：可选参数，每次要遍历的键个数，默认是 10</li>
 </ul>
 </li>
 </ul>
+<p>除了scan 以外，Redis还提供了面向哈希、集合、有序列表的扫描遍历命令：hscan、sscan、zscan</p>
 <h4 id="数据库管理"><a href="#数据库管理" class="headerlink" title="数据库管理"></a>数据库管理</h4><table>
 <thead>
 <tr>
@@ -1183,7 +1156,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#初识Redis"><span class="nav-number">1.</span> <span class="nav-text">初识Redis</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis特性"><span class="nav-number">1.1.</span> <span class="nav-text">Redis特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用好Redis的建议"><span class="nav-number">1.2.</span> <span class="nav-text">用好Redis的建议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-基本操作"><span class="nav-number">1.3.</span> <span class="nav-text">Redis 基本操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-版本"><span class="nav-number">1.4.</span> <span class="nav-text">Redis 版本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#API的理解和使用"><span class="nav-number">2.</span> <span class="nav-text">API的理解和使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#全局命令"><span class="nav-number">2.1.</span> <span class="nav-text">全局命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据结构和内部编码"><span class="nav-number">2.2.</span> <span class="nav-text">数据结构和内部编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单线程架构"><span class="nav-number">2.3.</span> <span class="nav-text">单线程架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串"><span class="nav-number">2.4.</span> <span class="nav-text">字符串</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#字符串类型常用命令"><span class="nav-number">2.4.1.</span> <span class="nav-text">字符串类型常用命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字符串类型不常用命令"><span class="nav-number">2.4.2.</span> <span class="nav-text">字符串类型不常用命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字符串内部编码"><span class="nav-number">2.4.3.</span> <span class="nav-text">字符串内部编码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#哈希"><span class="nav-number">2.5.</span> <span class="nav-text">哈希</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#哈希命令"><span class="nav-number">2.5.1.</span> <span class="nav-text">哈希命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内部编码"><span class="nav-number">2.5.2.</span> <span class="nav-text">内部编码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#列表"><span class="nav-number">2.6.</span> <span class="nav-text">列表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#列表的两个特点："><span class="nav-number">2.6.1.</span> <span class="nav-text">列表的两个特点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#命令"><span class="nav-number">2.6.2.</span> <span class="nav-text">命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内部编码-1"><span class="nav-number">2.6.3.</span> <span class="nav-text">内部编码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用场景"><span class="nav-number">2.6.4.</span> <span class="nav-text">使用场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集合"><span class="nav-number">2.7.</span> <span class="nav-text">集合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#命令-1"><span class="nav-number">2.7.1.</span> <span class="nav-text">命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内部编码-2"><span class="nav-number">2.7.2.</span> <span class="nav-text">内部编码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用场景-1"><span class="nav-number">2.7.3.</span> <span class="nav-text">使用场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#有序集合"><span class="nav-number">2.8.</span> <span class="nav-text">有序集合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#命令-2"><span class="nav-number">2.8.1.</span> <span class="nav-text">命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内部编码-3"><span class="nav-number">2.8.2.</span> <span class="nav-text">内部编码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用场景-2"><span class="nav-number">2.8.3.</span> <span class="nav-text">使用场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#键管理"><span class="nav-number">2.9.</span> <span class="nav-text">键管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#单个键管理"><span class="nav-number">2.9.1.</span> <span class="nav-text">单个键管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#遍历键"><span class="nav-number">2.9.2.</span> <span class="nav-text">遍历键</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库管理"><span class="nav-number">2.9.3.</span> <span class="nav-text">数据库管理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小功能大用处"><span class="nav-number">3.</span> <span class="nav-text">小功能大用处</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#慢查询分析"><span class="nav-number">3.1.</span> <span class="nav-text">慢查询分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redis-cli-详解"><span class="nav-number">3.2.</span> <span class="nav-text">redis-cli 详解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redis-server-详解"><span class="nav-number">3.3.</span> <span class="nav-text">redis-server 详解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redis-benchmark-详解"><span class="nav-number">3.4.</span> <span class="nav-text">redis-benchmark 详解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pipeline"><span class="nav-number">3.5.</span> <span class="nav-text">Pipeline</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事务与Lua"><span class="nav-number">3.6.</span> <span class="nav-text">事务与Lua</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#不同错误下的处理机制"><span class="nav-number">3.6.1.</span> <span class="nav-text">不同错误下的处理机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Lua"><span class="nav-number">3.6.2.</span> <span class="nav-text">Lua</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis中使用Lua"><span class="nav-number">3.6.3.</span> <span class="nav-text">Redis中使用Lua</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Lua的Redis-API"><span class="nav-number">3.6.4.</span> <span class="nav-text">Lua的Redis API</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis-如何管理Lua脚本"><span class="nav-number">3.6.5.</span> <span class="nav-text">Redis 如何管理Lua脚本</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bitmaps"><span class="nav-number">3.7.</span> <span class="nav-text">Bitmaps</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Bitmaps命令"><span class="nav-number">3.7.1.</span> <span class="nav-text">Bitmaps命令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HyperLogLog"><span class="nav-number">3.8.</span> <span class="nav-text">HyperLogLog</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#初识Redis"><span class="nav-number">1.</span> <span class="nav-text">初识Redis</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis特性"><span class="nav-number">1.1.</span> <span class="nav-text">Redis特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用好Redis的建议"><span class="nav-number">1.2.</span> <span class="nav-text">用好Redis的建议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-基本操作"><span class="nav-number">1.3.</span> <span class="nav-text">Redis 基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装"><span class="nav-number">1.3.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置、启动、操作、关闭"><span class="nav-number">1.3.2.</span> <span class="nav-text">配置、启动、操作、关闭</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-版本"><span class="nav-number">1.4.</span> <span class="nav-text">Redis 版本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#API的理解和使用"><span class="nav-number">2.</span> <span class="nav-text">API的理解和使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#全局命令"><span class="nav-number">2.1.</span> <span class="nav-text">全局命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据结构和内部编码"><span class="nav-number">2.2.</span> <span class="nav-text">数据结构和内部编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单线程架构"><span class="nav-number">2.3.</span> <span class="nav-text">单线程架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串"><span class="nav-number">2.4.</span> <span class="nav-text">字符串</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#字符串类型常用命令"><span class="nav-number">2.4.1.</span> <span class="nav-text">字符串类型常用命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字符串类型不常用命令"><span class="nav-number">2.4.2.</span> <span class="nav-text">字符串类型不常用命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字符串内部编码"><span class="nav-number">2.4.3.</span> <span class="nav-text">字符串内部编码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#哈希"><span class="nav-number">2.5.</span> <span class="nav-text">哈希</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#哈希命令"><span class="nav-number">2.5.1.</span> <span class="nav-text">哈希命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内部编码"><span class="nav-number">2.5.2.</span> <span class="nav-text">内部编码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#列表"><span class="nav-number">2.6.</span> <span class="nav-text">列表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#列表的两个特点："><span class="nav-number">2.6.1.</span> <span class="nav-text">列表的两个特点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#命令"><span class="nav-number">2.6.2.</span> <span class="nav-text">命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内部编码-1"><span class="nav-number">2.6.3.</span> <span class="nav-text">内部编码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用场景"><span class="nav-number">2.6.4.</span> <span class="nav-text">使用场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集合"><span class="nav-number">2.7.</span> <span class="nav-text">集合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#命令-1"><span class="nav-number">2.7.1.</span> <span class="nav-text">命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内部编码-2"><span class="nav-number">2.7.2.</span> <span class="nav-text">内部编码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用场景-1"><span class="nav-number">2.7.3.</span> <span class="nav-text">使用场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#有序集合"><span class="nav-number">2.8.</span> <span class="nav-text">有序集合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#命令-2"><span class="nav-number">2.8.1.</span> <span class="nav-text">命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内部编码-3"><span class="nav-number">2.8.2.</span> <span class="nav-text">内部编码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用场景-2"><span class="nav-number">2.8.3.</span> <span class="nav-text">使用场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#键管理"><span class="nav-number">2.9.</span> <span class="nav-text">键管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#单个键管理"><span class="nav-number">2.9.1.</span> <span class="nav-text">单个键管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#遍历键"><span class="nav-number">2.9.2.</span> <span class="nav-text">遍历键</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库管理"><span class="nav-number">2.9.3.</span> <span class="nav-text">数据库管理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小功能大用处"><span class="nav-number">3.</span> <span class="nav-text">小功能大用处</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#慢查询分析"><span class="nav-number">3.1.</span> <span class="nav-text">慢查询分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redis-cli-详解"><span class="nav-number">3.2.</span> <span class="nav-text">redis-cli 详解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redis-server-详解"><span class="nav-number">3.3.</span> <span class="nav-text">redis-server 详解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redis-benchmark-详解"><span class="nav-number">3.4.</span> <span class="nav-text">redis-benchmark 详解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pipeline"><span class="nav-number">3.5.</span> <span class="nav-text">Pipeline</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事务与Lua"><span class="nav-number">3.6.</span> <span class="nav-text">事务与Lua</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#不同错误下的处理机制"><span class="nav-number">3.6.1.</span> <span class="nav-text">不同错误下的处理机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Lua"><span class="nav-number">3.6.2.</span> <span class="nav-text">Lua</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis中使用Lua"><span class="nav-number">3.6.3.</span> <span class="nav-text">Redis中使用Lua</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Lua的Redis-API"><span class="nav-number">3.6.4.</span> <span class="nav-text">Lua的Redis API</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis-如何管理Lua脚本"><span class="nav-number">3.6.5.</span> <span class="nav-text">Redis 如何管理Lua脚本</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bitmaps"><span class="nav-number">3.7.</span> <span class="nav-text">Bitmaps</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Bitmaps命令"><span class="nav-number">3.7.1.</span> <span class="nav-text">Bitmaps命令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HyperLogLog"><span class="nav-number">3.8.</span> <span class="nav-text">HyperLogLog</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -1297,7 +1270,7 @@
 
 <script>
 if (document.querySelectorAll('pre.mermaid').length) {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+  NexT.utils.getScript('//cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.8/mermaid.min.js', () => {
     mermaid.initialize({
       theme    : 'forest',
       logLevel : 3,
