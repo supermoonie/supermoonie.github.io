@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://supermoonie.github.io/assets/algorithm/03.png">
 <meta property="og:image" content="https://supermoonie.github.io/assets/algorithm/04.svg">
 <meta property="article:published_time" content="2020-04-20T09:41:44.000Z">
-<meta property="article:modified_time" content="2020-04-20T10:20:53.868Z">
+<meta property="article:modified_time" content="2020-04-22T23:48:16.417Z">
 <meta property="article:author" content="supermoonie">
 <meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
@@ -268,7 +268,7 @@
 <li>主方法：可求解如下公式的递归式的界：<script type="math/tex; mode=display">
 T(n) = aT(n/b) + f(n)</script>其中 $a \ge 1, b \gt 1, f(n)$ 是一个给定的函数。该公式刻画了这样的一个分治算法：生成 a 个子问题，每个子问题的规模是原问题规模的 1/b ，分解和合并步骤共花费时间为 $f(n)$ 。</li>
 </ul>
-<h4 id="4-1-最大字数组问题"><a href="#4-1-最大字数组问题" class="headerlink" title="4.1 最大字数组问题"></a>4.1 最大字数组问题</h4><ul>
+<h4 id="最大字数组问题"><a href="#最大字数组问题" class="headerlink" title="最大字数组问题"></a>最大字数组问题</h4><ul>
 <li>暴力求解算法<br>两层for循环遍历每种可能的组合，时间复杂度为 $O(n^2)$ </li>
 <li><p>分治策略求解算法<br>将数组划分为两个规模尽量一致的字数组，则最大字数组必然是一下三种情况：</p>
 <ul>
@@ -359,7 +359,7 @@ T(n) = aT(n/b) + f(n)</script>其中 $a \ge 1, b \gt 1, f(n)$ 是一个给定的
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一部分-基础知识"><span class="nav-number">1.</span> <span class="nav-text">第一部分 基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#算法基础"><span class="nav-number">1.1.</span> <span class="nav-text">算法基础</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#插入排序"><span class="nav-number">1.1.1.</span> <span class="nav-text">插入排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#算法分析"><span class="nav-number">1.1.2.</span> <span class="nav-text">算法分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设计算法"><span class="nav-number">1.1.3.</span> <span class="nav-text">设计算法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数的增长"><span class="nav-number">1.2.</span> <span class="nav-text">函数的增长</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分治策略"><span class="nav-number">1.3.</span> <span class="nav-text">分治策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-最大字数组问题"><span class="nav-number">1.3.1.</span> <span class="nav-text">4.1 最大字数组问题</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一部分-基础知识"><span class="nav-number">1.</span> <span class="nav-text">第一部分 基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#算法基础"><span class="nav-number">1.1.</span> <span class="nav-text">算法基础</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#插入排序"><span class="nav-number">1.1.1.</span> <span class="nav-text">插入排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#算法分析"><span class="nav-number">1.1.2.</span> <span class="nav-text">算法分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设计算法"><span class="nav-number">1.1.3.</span> <span class="nav-text">设计算法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数的增长"><span class="nav-number">1.2.</span> <span class="nav-text">函数的增长</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分治策略"><span class="nav-number">1.3.</span> <span class="nav-text">分治策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#最大字数组问题"><span class="nav-number">1.3.1.</span> <span class="nav-text">最大字数组问题</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -483,12 +483,65 @@ if (document.querySelectorAll('pre.mermaid').length) {
     });
   }, window.mermaid);
 }
+</script>
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
 </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
-
-  
-
-  
+    
 
   
 
