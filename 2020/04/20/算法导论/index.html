@@ -17,25 +17,26 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"supermoonie.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"supermoonie.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="第一部分 基础知识算法基础插入排序">
+  <meta name="description" content="第一部分 基础知识第 2 章 算法基础2.1 插入排序">
 <meta property="og:type" content="article">
 <meta property="og:title" content="算法导论">
 <meta property="og:url" content="https://supermoonie.github.io/2020/04/20/%E7%AE%97%E6%B3%95%E5%AF%BC%E8%AE%BA/index.html">
 <meta property="og:site_name" content="supermoonie的笔记">
-<meta property="og:description" content="第一部分 基础知识算法基础插入排序">
+<meta property="og:description" content="第一部分 基础知识第 2 章 算法基础2.1 插入排序">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://supermoonie.github.io/assets/algorithm/02.png">
-<meta property="og:image" content="https://supermoonie.github.io/assets/algorithm/03.png">
-<meta property="og:image" content="https://supermoonie.github.io/assets/algorithm/04.svg">
+<meta property="og:image" content="https://assets-1253328229.cos.ap-shanghai.myqcloud.com/assets/algorithm_introduction_02.png">
+<meta property="og:image" content="https://assets-1253328229.cos.ap-shanghai.myqcloud.com/assets/algorithm_introduction_03.png">
+<meta property="og:image" content="https://assets-1253328229.cos.ap-shanghai.myqcloud.com/assets/algorithm_introduction_04.svg">
+<meta property="og:image" content="https://assets-1253328229.cos.ap-shanghai.myqcloud.com/assets/heap_sort.svg">
 <meta property="article:published_time" content="2020-04-20T09:41:44.000Z">
-<meta property="article:modified_time" content="2020-04-22T23:48:16.417Z">
+<meta property="article:modified_time" content="2020-05-14T23:39:49.204Z">
 <meta property="article:author" content="supermoonie">
 <meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://supermoonie.github.io/assets/algorithm/02.png">
+<meta name="twitter:image" content="https://assets-1253328229.cos.ap-shanghai.myqcloud.com/assets/algorithm_introduction_02.png">
 
 <link rel="canonical" href="https://supermoonie.github.io/2020/04/20/%E7%AE%97%E6%B3%95%E5%AF%BC%E8%AE%BA/">
 
@@ -184,6 +185,8 @@
     <i class="fa fa-arrow-up"></i>
     <span>0%</span>
   </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
 
   <a href="https://github.com/supermoonie" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
 
@@ -246,29 +249,29 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="第一部分-基础知识"><a href="#第一部分-基础知识" class="headerlink" title="第一部分 基础知识"></a>第一部分 基础知识</h2><h3 id="算法基础"><a href="#算法基础" class="headerlink" title="算法基础"></a>算法基础</h3><h4 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h4><p> <img src="/assets/algorithm/02.png" alt="insert_sort"></p>
+        <h2 id="第一部分-基础知识"><a href="#第一部分-基础知识" class="headerlink" title="第一部分 基础知识"></a>第一部分 基础知识</h2><h3 id="第-2-章-算法基础"><a href="#第-2-章-算法基础" class="headerlink" title="第 2 章 算法基础"></a>第 2 章 算法基础</h3><h4 id="2-1-插入排序"><a href="#2-1-插入排序" class="headerlink" title="2.1 插入排序"></a>2.1 插入排序</h4><p><img src="https://assets-1253328229.cos.ap-shanghai.myqcloud.com/assets/algorithm_introduction_02.png" alt="algorithm_introduction_02"></p>
 <a id="more"></a>
-<h4 id="算法分析"><a href="#算法分析" class="headerlink" title="算法分析"></a>算法分析</h4><ul>
+<h4 id="2-2-算法分析"><a href="#2-2-算法分析" class="headerlink" title="2.2 算法分析"></a>2.2 算法分析</h4><ul>
 <li>运行时间：基本操作数或步数</li>
 <li>最坏情况与平均情况分析</li>
 <li>增长量级 </li>
 </ul>
-<h4 id="设计算法"><a href="#设计算法" class="headerlink" title="设计算法"></a>设计算法</h4><p>分治法：将原问题分解为几个规模较小但类似于原问题的子问题，递归地求解这些子问题，然后再合并这些子问题的解来建立原问题的解。</p>
+<h4 id="2-3-设计算法"><a href="#2-3-设计算法" class="headerlink" title="2.3 设计算法"></a>2.3 设计算法</h4><p>分治法：将原问题分解为几个规模较小但类似于原问题的子问题，递归地求解这些子问题，然后再合并这些子问题的解来建立原问题的解。</p>
 <p>每层递归都有三个步骤：</p>
 <ol>
 <li>分解原问题为若干子问题</li>
 <li>解决这些子问题</li>
 <li>合并这些子问题的解成原问题的解</li>
 </ol>
-<p><img src="/assets/algorithm/03.png" alt="merge_sort"></p>
-<h3 id="函数的增长"><a href="#函数的增长" class="headerlink" title="函数的增长"></a>函数的增长</h3><h3 id="分治策略"><a href="#分治策略" class="headerlink" title="分治策略"></a>分治策略</h3><p>三种求解递归式的方法：</p>
+<p><img src="https://assets-1253328229.cos.ap-shanghai.myqcloud.com/assets/algorithm_introduction_03.png" alt="algorithm_introduction_03"></p>
+<h3 id="第-3-章-函数的增长"><a href="#第-3-章-函数的增长" class="headerlink" title="第 3 章 函数的增长"></a>第 3 章 函数的增长</h3><h3 id="第-4-章-分治策略"><a href="#第-4-章-分治策略" class="headerlink" title="第 4 章 分治策略"></a>第 4 章 分治策略</h3><p>三种求解递归式的方法：</p>
 <ul>
 <li>代入法：猜测一个界，然后用数学归纳法证明这个界是正确的</li>
 <li>递归树法：将递归式转换为一棵树，其节点表示不同层次的递归调用产生的代价</li>
 <li>主方法：可求解如下公式的递归式的界：<script type="math/tex; mode=display">
 T(n) = aT(n/b) + f(n)</script>其中 $a \ge 1, b \gt 1, f(n)$ 是一个给定的函数。该公式刻画了这样的一个分治算法：生成 a 个子问题，每个子问题的规模是原问题规模的 1/b ，分解和合并步骤共花费时间为 $f(n)$ 。</li>
 </ul>
-<h4 id="最大字数组问题"><a href="#最大字数组问题" class="headerlink" title="最大字数组问题"></a>最大字数组问题</h4><ul>
+<h4 id="4-1-最大字数组问题"><a href="#4-1-最大字数组问题" class="headerlink" title="4.1 最大字数组问题"></a>4.1 最大字数组问题</h4><ul>
 <li>暴力求解算法<br>两层for循环遍历每种可能的组合，时间复杂度为 $O(n^2)$ </li>
 <li><p>分治策略求解算法<br>将数组划分为两个规模尽量一致的字数组，则最大字数组必然是一下三种情况：</p>
 <ul>
@@ -276,10 +279,23 @@ T(n) = aT(n/b) + f(n)</script>其中 $a \ge 1, b \gt 1, f(n)$ 是一个给定的
 <li>右字数组</li>
 <li>跨越中点的字数组</li>
 </ul>
-<p><img src="/assets/algorithm/04.svg" alt="04.svg"> </p>
+<p><img src="https://assets-1253328229.cos.ap-shanghai.myqcloud.com/assets/algorithm_introduction_04.svg" alt="algorithm_introduction_04"></p>
 </li>
 </ul>
-
+<h3 id="第-5-章-堆排序"><a href="#第-5-章-堆排序" class="headerlink" title="第 5 章 堆排序"></a>第 5 章 堆排序</h3><p><img src="https://assets-1253328229.cos.ap-shanghai.myqcloud.com/assets/heap_sort.svg" alt="heap_sort"></p>
+<h4 id="5-1-建堆："><a href="#5-1-建堆：" class="headerlink" title="5.1 建堆："></a>5.1 建堆：</h4><ol>
+<li>选取最后一个包含叶子结点的节点（n/2）</li>
+<li>从n/2, (n/2 - 1), (n/2 - 2) … 依次遍历至根节点</li>
+<li>遍历的过程中与子节点进行比较，如果子节点大则进行交换并再次对此子节点进行堆调整</li>
+</ol>
+<h4 id="5-2-堆排序"><a href="#5-2-堆排序" class="headerlink" title="5.2 堆排序"></a>5.2 堆排序</h4><ol>
+<li>建堆，使数组中的最大值位于根节点</li>
+<li>将根节点与最后一个节点互换位置并去除</li>
+<li>堆剩余的数组元素建堆</li>
+<li>重复2，3 直至剩下最后一个元素</li>
+</ol>
+<h4 id="5-3-优先队列"><a href="#5-3-优先队列" class="headerlink" title="5.3 优先队列"></a>5.3 优先队列</h4><p>参考Java的<code>PriorityQueue</code> </p>
+<h3 id="第-6-章-快速排序"><a href="#第-6-章-快速排序" class="headerlink" title="第 6 章 快速排序"></a>第 6 章 快速排序</h3>
     </div>
 
     
@@ -362,7 +378,7 @@ T(n) = aT(n/b) + f(n)</script>其中 $a \ge 1, b \gt 1, f(n)$ 是一个给定的
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一部分-基础知识"><span class="nav-number">1.</span> <span class="nav-text">第一部分 基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#算法基础"><span class="nav-number">1.1.</span> <span class="nav-text">算法基础</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#插入排序"><span class="nav-number">1.1.1.</span> <span class="nav-text">插入排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#算法分析"><span class="nav-number">1.1.2.</span> <span class="nav-text">算法分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设计算法"><span class="nav-number">1.1.3.</span> <span class="nav-text">设计算法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数的增长"><span class="nav-number">1.2.</span> <span class="nav-text">函数的增长</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分治策略"><span class="nav-number">1.3.</span> <span class="nav-text">分治策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#最大字数组问题"><span class="nav-number">1.3.1.</span> <span class="nav-text">最大字数组问题</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一部分-基础知识"><span class="nav-text">第一部分 基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第-2-章-算法基础"><span class="nav-text">第 2 章 算法基础</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-插入排序"><span class="nav-text">2.1 插入排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-算法分析"><span class="nav-text">2.2 算法分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-设计算法"><span class="nav-text">2.3 设计算法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第-3-章-函数的增长"><span class="nav-text">第 3 章 函数的增长</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第-4-章-分治策略"><span class="nav-text">第 4 章 分治策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-最大字数组问题"><span class="nav-text">4.1 最大字数组问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第-5-章-堆排序"><span class="nav-text">第 5 章 堆排序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1-建堆："><span class="nav-text">5.1 建堆：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2-堆排序"><span class="nav-text">5.2 堆排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-3-优先队列"><span class="nav-text">5.3 优先队列</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第-6-章-快速排序"><span class="nav-text">第 6 章 快速排序</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -376,20 +392,20 @@ T(n) = aT(n/b) + f(n)</script>其中 $a \ge 1, b \gt 1, f(n)$ 是一个给定的
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -452,6 +468,8 @@ T(n) = aT(n/b) + f(n)</script>其中 $a \ge 1, b \gt 1, f(n)$ 是一个给定的
 
 
 <script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
 
 
 
