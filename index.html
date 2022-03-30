@@ -192,6 +192,764 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://supermoonie.github.io/2022/03/15/Java-zh/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="supermoonie">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="supermoonie的笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/15/Java-zh/" class="post-title-link" itemprop="url">Java-zh.md</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-15 09:02:10" itemprop="dateCreated datePublished" datetime="2022-03-15T09:02:10+08:00">2022-03-15</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="谈谈对多态的理解"><a href="#谈谈对多态的理解" class="headerlink" title="谈谈对多态的理解"></a>谈谈对多态的理解</h3><p>多态的三个条件：</p>
+<ol>
+<li>继承</li>
+<li>重写</li>
+<li>向上转型（即父类引用指向子类对象）</li>
+</ol>
+<h3 id="多态的原理"><a href="#多态的原理" class="headerlink" title="多态的原理"></a>多态的原理</h3><p>Java的方法调用依赖类信息里的方法表实现的。</p>
+<p>子类继承父类的方法，如果不override那么调用会指向父类的方法，如果override那么会指向该类的方法。</p>
+<h3 id="char型变量中能否能不能存储一个中文汉字，为什么？"><a href="#char型变量中能否能不能存储一个中文汉字，为什么？" class="headerlink" title="char型变量中能否能不能存储一个中文汉字，为什么？"></a>char型变量中能否能不能存储一个中文汉字，为什么？</h3><p>char是用来存储unicode编码的字符，unicode编码包含了汉字，所以char可以存储一个中文汉字。</p>
+<p>不过由于某些特殊汉字不在unicode编码的字符集中，那么char就不能存储。</p>
+<h3 id="HashMap在JDK7和JDK8中的区别"><a href="#HashMap在JDK7和JDK8中的区别" class="headerlink" title="HashMap在JDK7和JDK8中的区别"></a>HashMap在JDK7和JDK8中的区别</h3><ul>
+<li>JDK7中的HashMap<ul>
+<li>基于数组+链表实现，底层维护了一个Entry数组</li>
+<li>发生hash冲突时，新元素总是插入到链表头中，旧元素移动到链表中</li>
+<li>扩容resize()时容易出现链表逆序，多线程下容易形成环形链表造成死循环</li>
+</ul>
+</li>
+<li>JDK8中的HashMap<ul>
+<li>基于数组+链表+红黑树实现，底层维护一个Node数组</li>
+<li>发生hash冲突时，先判断是链表还是红黑树，红黑树在树中插入数据，链表则在尾部插入</li>
+<li>扩容resize()时不会出现链表逆序，不易形成环形链表</li>
+</ul>
+</li>
+</ul>
+<h3 id="静态代理与动态代理的区别"><a href="#静态代理与动态代理的区别" class="headerlink" title="静态代理与动态代理的区别"></a>静态代理与动态代理的区别</h3><ul>
+<li>静态代理在代码运行之前就已存在</li>
+<li>动态代理在代码运行时才动态生成</li>
+</ul>
+<h3 id="synchronized-的实现原理"><a href="#synchronized-的实现原理" class="headerlink" title="synchronized 的实现原理"></a>synchronized 的实现原理</h3><ul>
+<li>同步代码块使用的是monitorenter和monitorexit</li>
+<li>同步方法使用的是ACC_SYNCHRONIZED标志</li>
+</ul>
+<pre class="mermaid">  graph LR
+  对象 --> 对象头
+  对象 --> 实例数据
+  对象 --> 对齐填充
+  对象头 --> MarkWorld
+  对象头 --> MetadataAddress
+  MarkWorld --> HashCode
+  MarkWorld --> 锁信息
+  MarkWorld --> 分代年龄
+  MarkWorld --> GC标志
+  MetadataAddress --> 类型指针指向对象的类元数据</pre>
+
+<h3 id="伪共享"><a href="#伪共享" class="headerlink" title="伪共享"></a>伪共享</h3><p>伪共享：同一缓存行中的数据过期。</p>
+<h3 id="伪共享出现的原因"><a href="#伪共享出现的原因" class="headerlink" title="伪共享出现的原因"></a>伪共享出现的原因</h3><p>缓存系统是以缓存行（cache line）为单位存储的，当多线程修改相互独立的变量时，如果这些变量共享同一个缓存行。<br>根据缓存一致性协议（MESI），这些变量就会过期从而影响彼此的性能。</p>
+<h3 id="如何避免伪共享"><a href="#如何避免伪共享" class="headerlink" title="如何避免伪共享"></a>如何避免伪共享</h3><p>字节填充，JDK8提供了 <code>sun.misc.Contended</code> 注解。</p>
+<h3 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h3><p>自旋锁：当一个线程在获取锁的时候，如果锁已经被其他线程获取，那么该线程将循环等待，然后不断地判断锁能否获取成功，知道获得锁才退出循环。</p>
+<h3 id="活锁"><a href="#活锁" class="headerlink" title="活锁"></a>活锁</h3><p>活锁：两个以上的线程在执行的时候，由于互相谦让资源，结果都拿不到资源。</p>
+<p><img src="http://img.code4j.online/assets/202203152052426.webp" alt="活锁"></p>
+<h3 id="线程池都有哪几种工作队列？"><a href="#线程池都有哪几种工作队列？" class="headerlink" title="线程池都有哪几种工作队列？"></a>线程池都有哪几种工作队列？</h3><ul>
+<li>ArrayBlockingQueue：基于数组的有界阻塞队列</li>
+<li>LinkedBlockingQueue：基于链表的阻塞队列</li>
+<li>SynchronousQueue：一个不存储元素的阻塞队列，插入操作必须等另一个线程调用移除操作</li>
+<li>PriorityBlockingQueue：具有优先级的无限阻塞队列</li>
+</ul>
+<h3 id="Thread-sleep-0-的作用"><a href="#Thread-sleep-0-的作用" class="headerlink" title="Thread.sleep(0) 的作用"></a>Thread.sleep(0) 的作用</h3><p>触发操作系统立刻重新进行一次CPU竞争。通常用在大循环中。</p>
+<h3 id="Hashtable的size-方法中明明只有一条语句”return-count”，为什么还要做同步"><a href="#Hashtable的size-方法中明明只有一条语句”return-count”，为什么还要做同步" class="headerlink" title="Hashtable的size()方法中明明只有一条语句”return count”，为什么还要做同步"></a>Hashtable的size()方法中明明只有一条语句”return count”，为什么还要做同步</h3><ul>
+<li>避免多线程下put元素后还未进行size++造成的不准确</li>
+<li>return count会被编译成多条汇编指令</li>
+</ul>
+<h3 id="JVM新生代中为什么要分为Eden和Survivor"><a href="#JVM新生代中为什么要分为Eden和Survivor" class="headerlink" title="JVM新生代中为什么要分为Eden和Survivor"></a>JVM新生代中为什么要分为Eden和Survivor</h3><p>如果没有Survivor，Eden每进行一次Minor GC，存活的对象就会被送入老年代，然后很快出发Full GC。</p>
+<p>Survivor存在的意义在于减少被送到老年代的对象，进而减少Full GC的发生。</p>
+<h3 id="什么是指令重排"><a href="#什么是指令重排" class="headerlink" title="什么是指令重排"></a>什么是指令重排</h3><p>指令重排：程序中的代码，并不按照写的顺序执行。</p>
+<p>Java中的重排会发生两次：</p>
+<ul>
+<li>将字节码编译成机器码的时候</li>
+<li>CPU执行的时候</li>
+</ul>
+<h3 id="内存屏障"><a href="#内存屏障" class="headerlink" title="内存屏障"></a>内存屏障</h3><p>内存屏障是一个CPU的指令，它可以保证特定操作顺序执行。</p>
+<h3 id="什么是happen-before原则"><a href="#什么是happen-before原则" class="headerlink" title="什么是happen-before原则"></a>什么是happen-before原则</h3><p>两个操作在不同的线程A、B中执行，如果A happen-before B，那么A执行完后，A操作的结果对B是可见的。</p>
+<h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3><p>索引：用于快速查询和检索数据的数据结构。</p>
+<h3 id="Hash索引与B-树索引的区别"><a href="#Hash索引与B-树索引的区别" class="headerlink" title="Hash索引与B+树索引的区别"></a>Hash索引与B+树索引的区别</h3><ul>
+<li>Hash索引存在Hash冲突</li>
+<li>Hash索引不支持顺序和范围查询</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://supermoonie.github.io/2022/03/13/MySql/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="supermoonie">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="supermoonie的笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/13/MySql/" class="post-title-link" itemprop="url">MySql</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-13 22:46:18" itemprop="dateCreated datePublished" datetime="2022-03-13T22:46:18+08:00">2022-03-13</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="binlog-的三种格式："><a href="#binlog-的三种格式：" class="headerlink" title="binlog 的三种格式："></a>binlog 的三种格式：</h3><ul>
+<li>statement：每一条会修改数据的sql都会记录在binlog中，日志量小，主从复制时存储过程、函数或者触发器可能无法复制</li>
+<li>row：不记录sql上下文相关信息，仅保存哪些记录被修改，日志量打，不会出现函数等无法复制的问题</li>
+<li>mixed：以上两种的混合使用，一般的语句修改使用statement格式保存binlog，函数等无法完成复制的，采用row格式</li>
+</ul>
+<h3 id="MySql-MVCC-Multi-Version-Concurrency-Control"><a href="#MySql-MVCC-Multi-Version-Concurrency-Control" class="headerlink" title="MySql MVCC (Multi-Version Concurrency Control)"></a>MySql MVCC (Multi-Version Concurrency Control)</h3><h3 id="InnoDB锁的三种算法"><a href="#InnoDB锁的三种算法" class="headerlink" title="InnoDB锁的三种算法"></a>InnoDB锁的三种算法</h3><ul>
+<li>Record Lock：记录锁，单个行记录上的锁</li>
+<li>Gap Lock：间隙锁，锁定一个范围，不包括记录本身</li>
+<li>Next-Key Lock：record + gap间隙锁，锁定一个范围，包含记录本身</li>
+</ul>
+<h3 id="B树和B-树（多路平衡查找树）的区别："><a href="#B树和B-树（多路平衡查找树）的区别：" class="headerlink" title="B树和B+树（多路平衡查找树）的区别："></a>B树和B+树（多路平衡查找树）的区别：</h3><ul>
+<li>B树的所有节点既存放键也存放数据；B+树只有叶子结点存放键和数据，其他内节点只存放键</li>
+<li>B树的叶子结点都是独立的；B+树的叶子结点有一条引用链指向它相邻的叶子结点</li>
+<li>B树的检索是对关键字二分查找，可能没到达叶子结点就结束了；B+树的检索都是从跟结点到叶子节点d的过程</li>
+</ul>
+<h3 id="索引类型"><a href="#索引类型" class="headerlink" title="索引类型"></a>索引类型</h3><ul>
+<li>主键索引</li>
+<li>二级（辅助）索引：二级索引的叶子节点存储的数据是主键</li>
+</ul>
+<h3 id="聚集索引与非聚集索引"><a href="#聚集索引与非聚集索引" class="headerlink" title="聚集索引与非聚集索引"></a>聚集索引与非聚集索引</h3><ul>
+<li>聚集索引：索引结构和数据一起存放的索引<ul>
+<li>优点：查询速度快</li>
+<li>缺点：<ol>
+<li>依赖有序的数据</li>
+<li>更新代价大</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>非聚集索引：<ul>
+<li>优点：更新代价小</li>
+<li>缺点：<ol>
+<li>依赖有序的数据</li>
+<li>可能会二次查询（回表）</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://supermoonie.github.io/2022/03/13/MQ/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="supermoonie">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="supermoonie的笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/13/MQ/" class="post-title-link" itemprop="url">MQ</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-13 21:59:22" itemprop="dateCreated datePublished" datetime="2022-03-13T21:59:22+08:00">2022-03-13</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="如何保证消息不被重复消费（幂等性）"><a href="#如何保证消息不被重复消费（幂等性）" class="headerlink" title="如何保证消息不被重复消费（幂等性）"></a>如何保证消息不被重复消费（幂等性）</h3><p>每个消息都有唯一的消息id或者业务id：</p>
+<ol>
+<li>先查询再保存</li>
+<li>业务表添加条件约束</li>
+<li>添加消息表，消息ID添加唯一约束</li>
+<li>使用redis，对消息id进行加锁</li>
+</ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/03/13/MQ/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://supermoonie.github.io/2022/03/13/%E5%8D%81%E5%A4%A7%E7%BB%8F%E5%85%B8%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="supermoonie">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="supermoonie的笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/13/%E5%8D%81%E5%A4%A7%E7%BB%8F%E5%85%B8%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">十大经典排序算法</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-13 09:57:19" itemprop="dateCreated datePublished" datetime="2022-03-13T09:57:19+08:00">2022-03-13</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="算法分类"><a href="#算法分类" class="headerlink" title="算法分类"></a>算法分类</h4><p>十种常见排序算法可以分为两大类：</p>
+<ul>
+<li>非线性时间比较类排序：通过比较来决定元素间的相对次序，由于其时间复杂度不能突破O($n\log_n$)，因此称为非线性时间比较类排序。</li>
+<li>线性时间非比较类排序：不通过比较来决定元素间的相对次序，它可以突破基于比较排序的时间下界，以线性时间运行，因此称为线性时间非比较类排序。</li>
+</ul>
+<pre class="mermaid">  graph LR
+    排序算法 --> 非线性时间比较类排序
+    排序算法 --> 线性时间非比较类排序
+    非线性时间比较类排序 --> 交换排序
+    交换排序 --> 冒泡排序
+    交换排序 --> 快速排序
+    非线性时间比较类排序 --> 插入排序
+    插入排序 --> 简单插入排序
+    插入排序 --> 希尔排序
+    非线性时间比较类排序 --> 选择排序
+    选择排序 --> 简单选择排序
+    选择排序 --> 堆选择排序
+    非线性时间比较类排序 --> 归并排序
+    归并排序 --> 二路归并排序
+    归并排序 --> 多路归并排序
+    线性时间非比较类排序 --> 基数排序
+    线性时间非比较类排序 --> 桶排序</pre>
+
+<h4 id="算法复杂度"><a href="#算法复杂度" class="headerlink" title="算法复杂度"></a>算法复杂度</h4><p><img src="http://img.code4j.online/assets/202203131145208.jpg" alt="常用排序算法对比"></p>
+<h4 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h4><p>稳定：如果a原本在b前面，而a=b，排序之后a仍然在b的前面。</p>
+<p>不稳定：如果a原本在b的前面，而a=b，排序之后 a 可能会出现在 b 的后面。</p>
+<p>时间复杂度：对排序数据的总的操作次数。反映当n变化时，操作次数呈现什么规律。</p>
+<p>空间复杂度：是指算法在计算机内执行时所需存储空间的度量，它也是数据规模n的函数。</p>
+<h4 id="1-冒泡排序（Bubble-Sort）"><a href="#1-冒泡排序（Bubble-Sort）" class="headerlink" title="1. 冒泡排序（Bubble Sort）"></a>1. 冒泡排序（Bubble Sort）</h4><p>冒泡排序是一种简单的排序算法。它重复地走访过要排序的数列，一次比较两个元素，如果它们的顺序错误就把它们交换过来。走访数列的工作是重复地进行直到没有再需要交换，也就是说该数列已经排序完成。这个算法的名字由来是因为越小的元素会经由交换慢慢“浮”到数列的顶端。</p>
+<h5 id="1-1-算法描述"><a href="#1-1-算法描述" class="headerlink" title="1.1 算法描述"></a>1.1 算法描述</h5><ol>
+<li>比较相邻的元素。如果第一个比第二个大，就交换它们两个；</li>
+<li>对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对，这样在最后的元素应该会是最大的数；</li>
+<li>针对所有的元素重复以上的步骤，除了最后一个；</li>
+<li>重复步骤1~3，直到排序完成。</li>
+</ol>
+<h5 id="1-2-动图演示"><a href="#1-2-动图演示" class="headerlink" title="1.2 动图演示"></a>1.2 动图演示</h5><p><img src="http://img.code4j.online/assets/202203131137804.gif" alt="冒泡排序"></p>
+<h5 id="1-3-代码实现"><a href="#1-3-代码实现" class="headerlink" title="1.3 代码实现"></a>1.3 代码实现</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BubbleSort</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(<span class="keyword">int</span>[] arr)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> len = arr.length;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len - <span class="number">1</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; len - <span class="number">1</span> - i; j++) &#123;</span><br><span class="line">                <span class="comment">// 相邻元素两两对比</span></span><br><span class="line">                <span class="keyword">if</span> (arr[j] &gt; arr[j + <span class="number">1</span>]) &#123;</span><br><span class="line">                    <span class="comment">// 元素交换</span></span><br><span class="line">                    <span class="keyword">int</span> temp = arr[j + <span class="number">1</span>];</span><br><span class="line">                    arr[j + <span class="number">1</span>] = arr[j];</span><br><span class="line">                    arr[j] = temp;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-选择排序（Selection-Sort）"><a href="#2-选择排序（Selection-Sort）" class="headerlink" title="2. 选择排序（Selection Sort）"></a>2. 选择排序（Selection Sort）</h4><p>选择排序(Selection-sort)是一种简单直观的排序算法。它的工作原理：首先在未排序序列中找到最小（大）元素，存放到排序序列的起始位置，然后，再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾。以此类推，直到所有元素均排序完毕。</p>
+<h5 id="2-1-算法描述"><a href="#2-1-算法描述" class="headerlink" title="2.1 算法描述"></a>2.1 算法描述</h5><p>n个记录的直接选择排序可经过n-1趟直接选择排序得到有序结果。具体算法描述如下：</p>
+<ol>
+<li>初始状态：无序区为R[1..n]，有序区为空；</li>
+<li>第i趟排序(i=1,2,3…n-1)开始时，当前有序区和无序区分别为R[1..i-1]和R(i..n）。该趟排序从当前无序区中-选出关键字最小的记录 R[k]，将它与无序区的第1个记录R交换，使R[1..i]和R[i+1..n)分别变为记录个数增加1个的新有序区和记录个数减少1个的新无序区；</li>
+<li>n-1趟结束，数组有序化了。</li>
+</ol>
+<h5 id="2-2-动图演示"><a href="#2-2-动图演示" class="headerlink" title="2.2 动图演示"></a>2.2 动图演示</h5><p><img src="http://img.code4j.online/assets/202203131149208.gif" alt="选择排序"></p>
+<h5 id="2-3-代码实现"><a href="#2-3-代码实现" class="headerlink" title="2.3 代码实现"></a>2.3 代码实现</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SelectionSort</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(<span class="keyword">int</span>[] arr)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = arr.length;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> minIndex = i;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; n; j++) &#123;</span><br><span class="line">                <span class="comment">// 寻找最小的数</span></span><br><span class="line">                <span class="keyword">if</span> (arr[minIndex] &gt; arr[j]) &#123;</span><br><span class="line">                    <span class="comment">// 将最小数的索引保存</span></span><br><span class="line">                    minIndex = j;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (i != minIndex) &#123;</span><br><span class="line">                <span class="keyword">int</span> temp = arr[i];</span><br><span class="line">                arr[i] = arr[minIndex];</span><br><span class="line">                arr[minIndex] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="2-4-算法分析"><a href="#2-4-算法分析" class="headerlink" title="2.4 算法分析"></a>2.4 算法分析</h5><p>表现最稳定的排序算法之一，因为无论什么数据进去都是$O(n^2)$的时间复杂度，所以用到它的时候，数据规模越小越好。唯一的好处可能就是不占用额外的内存空间了吧。理论上讲，选择排序可能也是平时排序一般人想到的最多的排序方法了吧。</p>
+<h4 id="3-插入排序（Insertion-Sort）"><a href="#3-插入排序（Insertion-Sort）" class="headerlink" title="3. 插入排序（Insertion Sort）"></a>3. 插入排序（Insertion Sort）</h4><p>插入排序（Insertion-Sort）的算法描述是一种简单直观的排序算法。它的工作原理是通过构建有序序列，对于未排序数据，在已排序序列中从后向前扫描，找到相应位置并插入。</p>
+<h5 id="3-1-算法描述"><a href="#3-1-算法描述" class="headerlink" title="3.1 算法描述"></a>3.1 算法描述</h5><p>一般来说，插入排序都采用in-place在数组上实现。具体算法描述如下：</p>
+<ol>
+<li>从第一个元素开始，该元素可以认为已经被排序；</li>
+<li>取出下一个元素，在已经排序的元素序列中从后向前扫描；</li>
+<li>如果该元素（已排序）大于新元素，将该元素移到下一位置；</li>
+<li>重复步骤3，直到找到已排序的元素小于或者等于新元素的位置；</li>
+<li>将新元素插入到该位置后；</li>
+<li>重复步骤2~5。</li>
+</ol>
+<h5 id="3-2-动图演示"><a href="#3-2-动图演示" class="headerlink" title="3.2 动图演示"></a>3.2 动图演示</h5><p><img src="http://img.code4j.online/assets/202203131201358.gif" alt="插入排序"></p>
+<h5 id="3-3-代码实现"><a href="#3-3-代码实现" class="headerlink" title="3.3 代码实现"></a>3.3 代码实现</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InsertionSort</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(<span class="keyword">int</span>[] arr)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> len = arr.length;</span><br><span class="line">        <span class="keyword">int</span> preIndex, current;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; len; i++) &#123;</span><br><span class="line">            preIndex = i - <span class="number">1</span>;</span><br><span class="line">            current = arr[i];</span><br><span class="line">            <span class="keyword">while</span> (preIndex &gt;= <span class="number">0</span> &amp;&amp; arr[preIndex] &gt; current) &#123;</span><br><span class="line">                arr[preIndex + <span class="number">1</span>] = arr[preIndex];</span><br><span class="line">                preIndex--;</span><br><span class="line">            &#125;</span><br><span class="line">            arr[preIndex + <span class="number">1</span>] = current;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="3-4-算法分析"><a href="#3-4-算法分析" class="headerlink" title="3.4 算法分析"></a>3.4 算法分析</h5><p>插入排序在实现上，通常采用in-place排序（即只需用到$O(1)$的额外空间的排序），因而在从后向前扫描过程中，需要反复把已排序元素逐步向后挪位，为最新元素提供插入空间。</p>
+<h4 id="4-希尔排序（Shell-Sort）"><a href="#4-希尔排序（Shell-Sort）" class="headerlink" title="4. 希尔排序（Shell Sort）"></a>4. 希尔排序（Shell Sort）</h4><p>1959年Shell发明，第一个突破$O(n^2)$的排序算法，是简单插入排序的改进版。它与插入排序的不同之处在于，它会优先比较距离较远的元素。希尔排序又叫缩小增量排序。</p>
+<h5 id="4-1-算法描述"><a href="#4-1-算法描述" class="headerlink" title="4.1 算法描述"></a>4.1 算法描述</h5><p>先将整个待排序的记录序列分割成为若干子序列分别进行直接插入排序，具体算法描述：</p>
+<ol>
+<li>选择一个增量序列t1，t2，…，tk，其中ti&gt;tj，tk=1；</li>
+<li>按增量序列个数k，对序列进行k 趟排序；</li>
+<li>每趟排序，根据对应的增量ti，将待排序列分割成若干长度为m 的子序列，分别对各子表进行直接插入排序。仅增量因子为1 时，整个序列作为一个表来处理，表长度即为整个序列的长度。</li>
+</ol>
+<h5 id="4-2-动图演示"><a href="#4-2-动图演示" class="headerlink" title="4.2 动图演示"></a>4.2 动图演示</h5><p><img src="http://img.code4j.online/assets/202203131213327.gif" alt="希尔排序"></p>
+<h5 id="4-3-代码实现"><a href="#4-3-代码实现" class="headerlink" title="4.3 代码实现"></a>4.3 代码实现</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ShellSort</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(<span class="keyword">int</span>[] arr)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = arr.length;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> h = n / <span class="number">2</span>; h &gt; <span class="number">0</span>; h /= <span class="number">2</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = h; i &lt; n; i++) &#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> j = i - h; j &gt;= <span class="number">0</span>; j -= h) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (arr[j] &gt; arr[j + h]) &#123;</span><br><span class="line">                        <span class="keyword">int</span> temp = arr[j];</span><br><span class="line">                        arr[j] = arr[j + h];</span><br><span class="line">                        arr[j + h] = temp;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="4-4-算法分析"><a href="#4-4-算法分析" class="headerlink" title="4.4 算法分析"></a>4.4 算法分析</h5><p>希尔排序的核心在于间隔序列的设定。既可以提前设定好间隔序列，也可以动态的定义间隔序列。动态定义间隔序列的算法是《算法（第4版）》的合著者Robert Sedgewick提出的。</p>
+<h4 id="5-归并排序（Merge-Sort）"><a href="#5-归并排序（Merge-Sort）" class="headerlink" title="5. 归并排序（Merge Sort）"></a>5. 归并排序（Merge Sort）</h4><p>归并排序是建立在归并操作上的一种有效的排序算法。该算法是采用分治法（Divide and Conquer）的一个非常典型的应用。将已有序的子序列合并，得到完全有序的序列；即先使每个子序列有序，再使子序列段间有序。若将两个有序表合并成一个有序表，称为2-路归并。</p>
+<h5 id="5-1-算法描述"><a href="#5-1-算法描述" class="headerlink" title="5.1 算法描述"></a>5.1 算法描述</h5><ol>
+<li>把长度为n的输入序列分成两个长度为n/2的子序列；</li>
+<li>对这两个子序列分别采用归并排序；</li>
+<li>将两个排序好的子序列合并成一个最终的排序序列。</li>
+</ol>
+<h5 id="5-2-动图演示"><a href="#5-2-动图演示" class="headerlink" title="5.2 动图演示"></a>5.2 动图演示</h5><p><img src="http://img.code4j.online/assets/202203131225834.gif" alt="归并排序"></p>
+<h5 id="5-3-代码实现"><a href="#5-3-代码实现" class="headerlink" title="5.3 代码实现"></a>5.3 代码实现</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MergeSort</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(<span class="keyword">int</span>[] array, <span class="keyword">int</span> low, <span class="keyword">int</span> high)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> middle = (low + high) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (low &lt; high) &#123;</span><br><span class="line">            sort(array, low, middle);</span><br><span class="line">            sort(array, middle + <span class="number">1</span>, high);</span><br><span class="line">            merge(array, low, middle, high);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">merge</span><span class="params">(<span class="keyword">int</span>[] array, <span class="keyword">int</span> low, <span class="keyword">int</span> middle, <span class="keyword">int</span> high)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span>[] temp = <span class="keyword">new</span> <span class="keyword">int</span>[high - low + <span class="number">1</span>];</span><br><span class="line">        <span class="keyword">int</span> i = low;</span><br><span class="line">        <span class="keyword">int</span> j = middle + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> k = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (i &lt;= middle &amp;&amp; j &lt;= high) &#123;</span><br><span class="line">            <span class="keyword">if</span> (array[i] &lt; array[j]) &#123;</span><br><span class="line">                temp[k++] = array[i++];</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                temp[k++] = array[j++];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span> (i &lt;= middle) &#123;</span><br><span class="line">            temp[k++] = array[i++];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span> (j &lt;= high) &#123;</span><br><span class="line">            temp[k++] = array[j++];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> m = <span class="number">0</span>; m &lt; temp.length; m++) &#123;</span><br><span class="line">            array[m + low] = temp[m];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="5-4-算法分析"><a href="#5-4-算法分析" class="headerlink" title="5.4 算法分析"></a>5.4 算法分析</h5><p>归并排序是一种稳定的排序方法。和选择排序一样，归并排序的性能不受输入数据的影响，但表现比选择排序好的多，因为始终都是O(nlogn）的时间复杂度。代价是需要额外的内存空间。</p>
+<h4 id="6-快速排序（Quick-Sort）"><a href="#6-快速排序（Quick-Sort）" class="headerlink" title="6. 快速排序（Quick Sort）"></a>6. 快速排序（Quick Sort）</h4><p>快速排序的基本思想：通过一趟排序将待排记录分隔成独立的两部分，其中一部分记录的关键字均比另一部分的关键字小，则可分别对这两部分记录继续进行排序，以达到整个序列有序。</p>
+<h5 id="6-1-算法描述"><a href="#6-1-算法描述" class="headerlink" title="6.1 算法描述"></a>6.1 算法描述</h5><p>快速排序使用分治法来把一个串（list）分为两个子串（sub-lists）。具体算法描述如下：</p>
+<ol>
+<li>从数列中挑出一个元素，称为 “基准”（pivot）；</li>
+<li>重新排序数列，所有元素比基准值小的摆放在基准前面，所有元素比基准值大的摆在基准的后面（相同的数可以到任一边）。在这个分区退出之后，该基准就处于数列的中间位置。这个称为分区（partition）操作；</li>
+<li>递归地（recursive）把小于基准值元素的子数列和大于基准值元素的子数列排序。</li>
+</ol>
+<h5 id="6-2-动图演示"><a href="#6-2-动图演示" class="headerlink" title="6.2 动图演示"></a>6.2 动图演示</h5><p><img src="http://img.code4j.online/assets/202203131515860.gif" alt="快速排序"></p>
+<h5 id="6-3-代码实现"><a href="#6-3-代码实现" class="headerlink" title="6.3 代码实现"></a>6.3 代码实现</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QuickSort</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(<span class="keyword">int</span>[] arr, <span class="keyword">int</span> left, <span class="keyword">int</span> right)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (left &lt; right) &#123;</span><br><span class="line">            <span class="keyword">int</span> pivot = arr[left];</span><br><span class="line">            <span class="keyword">int</span> low = left;</span><br><span class="line">            <span class="keyword">int</span> high = right;</span><br><span class="line">            <span class="keyword">while</span> (low &lt; high) &#123;</span><br><span class="line">                <span class="keyword">while</span> (low &lt; high &amp;&amp; arr[high] &gt;= pivot) &#123;</span><br><span class="line">                    high--;</span><br><span class="line">                &#125;</span><br><span class="line">                arr[low] = arr[high];</span><br><span class="line">                <span class="keyword">while</span> (low &lt; high &amp;&amp; arr[low] &lt;= pivot) &#123;</span><br><span class="line">                    low++;</span><br><span class="line">                &#125;</span><br><span class="line">                arr[high] = arr[low];</span><br><span class="line">            &#125;</span><br><span class="line">            arr[low] = pivot;</span><br><span class="line">            sort(arr, left, low - <span class="number">1</span>);</span><br><span class="line">            sort(arr, low + <span class="number">1</span>, right);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="7-堆排序（Heap-Sort）"><a href="#7-堆排序（Heap-Sort）" class="headerlink" title="7. 堆排序（Heap Sort）"></a>7. 堆排序（Heap Sort）</h4><p>堆排序（Heapsort）是指利用堆这种数据结构所设计的一种排序算法。堆积是一个近似完全二叉树的结构，并同时满足堆积的性质：即子结点的键值或索引总是小于（或者大于）它的父节点。</p>
+<h5 id="7-1-算法描述"><a href="#7-1-算法描述" class="headerlink" title="7.1 算法描述"></a>7.1 算法描述</h5><ol>
+<li>将初始待排序关键字序列(R1,R2….Rn)构建成大顶堆，此堆为初始的无序区；</li>
+<li>将堆顶元素R[1]与最后一个元素R[n]交换，此时得到新的无序区(R1,R2,……Rn-1)和新的有序区(Rn),且满足R[1,2…n-1]&lt;=r[n]；&lt; span=””&gt;&lt;/=r[n]；</li>
+<li>由于交换后新的堆顶R[1]可能违反堆的性质，因此需要对当前无序区(R1,R2,……Rn-1)调整为新堆，然后再次将R[1]与无序区最后一个元素交换，得到新的无序区(R1,R2….Rn-2)和新的有序区(Rn-1,Rn)。不断重复此过程直到有序区的元素个数为n-1，则整个排序过程完成。</li>
+</ol>
+<h5 id="7-2-动图演示"><a href="#7-2-动图演示" class="headerlink" title="7.2 动图演示"></a>7.2 动图演示</h5><p><img src="http://img.code4j.online/assets/202203131528405.gif" alt="堆排序"></p>
+<h5 id="7-3-代码实现"><a href="#7-3-代码实现" class="headerlink" title="7.3 代码实现"></a>7.3 代码实现</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://supermoonie.github.io/2022/03/12/%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="supermoonie">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="supermoonie的笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/12/%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">算法</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-12 20:40:41" itemprop="dateCreated datePublished" datetime="2022-03-12T20:40:41+08:00">2022-03-12</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h3><p>动态规划：通过采用递归（或者分而治之）的策略，通过解决大问题的子问题从而解决整体的做法。</p>
+<p>动态规划的解题核心分为两步：</p>
+<ol>
+<li>状态（问题）的定义</li>
+<li>状态（问题）转移方程的定义</li>
+</ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/03/12/%E7%AE%97%E6%B3%95/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://supermoonie.github.io/2022/03/11/Java-en/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="supermoonie">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="supermoonie的笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/11/Java-en/" class="post-title-link" itemprop="url">Java-en</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-11 15:34:05" itemprop="dateCreated datePublished" datetime="2022-03-11T15:34:05+08:00">2022-03-11</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="What-are-the-characteristics-of-java-language"><a href="#What-are-the-characteristics-of-java-language" class="headerlink" title="What are the characteristics of java language ?"></a>What are the characteristics of java language ?</h3><ul>
+<li>easy to lean</li>
+<li>cross-platform</li>
+<li>object-oriented(encapsulation, inheritance, polymorphism)</li>
+<li>garbage collection</li>
+<li>safety</li>
+<li>reliability</li>
+<li>compilation and interpretation coexist</li>
+</ul>
+<h3 id="JVM-vs-JRE-vs-JDK"><a href="#JVM-vs-JRE-vs-JDK" class="headerlink" title="JVM vs JRE vs JDK"></a>JVM vs JRE vs JDK</h3><ul>
+<li>JVM: Java Virtual Machine, is a virtual machine that runs Java bytecode.</li>
+<li>JRE: Java Runtime Environment, It is a collection of everything to run a compiled java program.</li>
+<li>JDK: JDK is short for Java Development Kit, it has everything that JRE has, plus the compiler(javac) and tools(like javadoc and jdb). It can create and compile programs.</li>
+</ul>
+<h3 id="What-is-bytecode-What-are-the-benefits-of-bytecode"><a href="#What-is-bytecode-What-are-the-benefits-of-bytecode" class="headerlink" title="What is bytecode? What are the benefits of bytecode ?"></a>What is bytecode? What are the benefits of bytecode ?</h3><p>bytecode is the code that JVM can understand. It solves the problem of low execution efficiency of traditional interpreted languages, and at the same time contains the portability of interpreted languages.</p>
+<h3 id="What-is-it-said-that-the-java-language-“compile-and-interprets-side-by-side”"><a href="#What-is-it-said-that-the-java-language-“compile-and-interprets-side-by-side”" class="headerlink" title="What is it said that the java language “compile and interprets side by side” ?"></a>What is it said that the java language “compile and interprets side by side” ?</h3><p>Programs written in java must be compiled first to generate bytecode, which must be interpreted and executed by java interpreter.</p>
+<h3 id="Difference-of-Java-and-C"><a href="#Difference-of-Java-and-C" class="headerlink" title="Difference of Java and C++ ?"></a>Difference of Java and C++ ?</h3><p>All object-oriented language that support encapsulation, inheritance, polymorphism.</p>
+<ol>
+<li>Java cross-platform, C++ not</li>
+<li>Java has GC, C++ not</li>
+<li>C++ has pointer that can access memory, Java not</li>
+<li>C++ is multi-inheritance, Java is not but can implement multi interface</li>
+<li>C++ support operator overloading, Java not support</li>
+</ol>
+<h3 id="The-difference-between-character-constants-and-string-constants"><a href="#The-difference-between-character-constants-and-string-constants" class="headerlink" title="The difference between character constants and string constants ?"></a>The difference between character constants and string constants ?</h3><ul>
+<li>A character constants is a character enclosed by single quotes, and a string constants is zero or more character enclosed by double quotes</li>
+<li>Character constants occupy 2 bytes, string constants occupy several bytes</li>
+<li>A character equal to an integer value, string constants represents an address value(where the string constants stored in memory)</li>
+</ul>
+<h3 id="The-difference-between-identifier-and-keyword"><a href="#The-difference-between-identifier-and-keyword" class="headerlink" title="The difference between identifier and keyword ?"></a>The difference between identifier and keyword ?</h3><p>Identifier is the names for program、classes、variable、methods、etc. Keyword is the special identifier.</p>
+<h3 id="The-difference-between-continue、break-and-return"><a href="#The-difference-between-continue、break-and-return" class="headerlink" title="The difference between continue、break and return ?"></a>The difference between continue、break and return ?</h3><ul>
+<li>continue: stop current loop, continue next loop</li>
+<li>break: stop all the loop</li>
+<li>return: stop the method and return</li>
+</ul>
+<h3 id="The-difference-between-and-equals"><a href="#The-difference-between-and-equals" class="headerlink" title="The difference between == and equals ?"></a>The difference between == and equals ?</h3><h3 id="The-difference-between-overloading-and-overriding"><a href="#The-difference-between-overloading-and-overriding" class="headerlink" title="The difference between overloading and overriding ?"></a>The difference between overloading and overriding ?</h3>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://supermoonie.github.io/2022/03/11/MyBatis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="supermoonie">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="supermoonie的笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/11/MyBatis/" class="post-title-link" itemprop="url">MyBatis</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-11 08:55:15" itemprop="dateCreated datePublished" datetime="2022-03-11T08:55:15+08:00">2022-03-11</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="MyBatis-是如何进行分页的？"><a href="#MyBatis-是如何进行分页的？" class="headerlink" title="MyBatis 是如何进行分页的？"></a>MyBatis 是如何进行分页的？</h3><p>MyBatis 提供了逻辑分页，使用RowBounds实现。先把数据全部查询出来，再根据offset和limit截断返回。<br>可以再sql中直接书写带有物理分页的参数来完成物理分页功能，也可以使用分页插件来完成。</p>
+<h3 id="MyBatis-插件运行原理"><a href="#MyBatis-插件运行原理" class="headerlink" title="MyBatis 插件运行原理"></a>MyBatis 插件运行原理</h3><p>MyBatis可以编写针对ParameterHandler、ResultSetHandler、StatementHandler、Executor 这4中接口的插件。 MyBatis使用JDK动态代理为需要拦截的接口生成代理对象以实现对接口方法得拦截功能。</p>
+<h3 id="MyBatis-是否支持延迟加载"><a href="#MyBatis-是否支持延迟加载" class="headerlink" title="MyBatis 是否支持延迟加载"></a>MyBatis 是否支持延迟加载</h3><p>MyBatis仅支持 association 关联对象和 collection 关联集合对象的延迟加载。</p>
+<h3 id="延迟加载的原理"><a href="#延迟加载的原理" class="headerlink" title="延迟加载的原理"></a>延迟加载的原理</h3><p>使用 CGLIB 创建目标对象的代理对象，当调用目标方法时，进入拦截方法。</p>
+<h3 id="和-的区别"><a href="#和-的区别" class="headerlink" title="${} 和 #{} 的区别"></a>${} 和 #{} 的区别</h3><p>${} 是字符串替换 #{} 是预处理，#{} 可以有效防止sql注入。</p>
+<h3 id="MyBatis-执行批量插入，能返回数据库主键列表吗"><a href="#MyBatis-执行批量插入，能返回数据库主键列表吗" class="headerlink" title="MyBatis 执行批量插入，能返回数据库主键列表吗"></a>MyBatis 执行批量插入，能返回数据库主键列表吗</h3><ul>
+<li>对于支持生成自增主键的数据库，使用 useGenerateKeys 和 keyProperty</li>
+<li>对于不支持生成自增主键的数据库，使用 <selectKey\></li>
+</ul>
+<h3 id="MyBatis中Executor执行器的区别"><a href="#MyBatis中Executor执行器的区别" class="headerlink" title="MyBatis中Executor执行器的区别"></a>MyBatis中Executor执行器的区别</h3><ul>
+<li>SimpleExecutor：每次执行update/select都开启一个Statement对象，用完立刻关闭。</li>
+<li>ReuseExecutor：执行update/select，以sql作为key查找Statement对象，存在就是用，不存在则创建。</li>
+<li>BatchExecutor：执行update，将sql都添加到批处理中然后逐一执行</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://supermoonie.github.io/2022/03/10/SpringBoot/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="supermoonie">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="supermoonie的笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/10/SpringBoot/" class="post-title-link" itemprop="url">SpringBoot</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-10 20:06:43" itemprop="dateCreated datePublished" datetime="2022-03-10T20:06:43+08:00">2022-03-10</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="SpringBoot自动装配原理"><a href="#SpringBoot自动装配原理" class="headerlink" title="SpringBoot自动装配原理"></a>SpringBoot自动装配原理</h3><ul>
+<li>启动类上的 <code>SpringBotApplication</code> 会在类启动时为SpringBoot开启一个 <code>EnableAutoConfiguration</code> 注解自动配置功能</li>
+<li>有了 <code>EnableAutoConfiguration</code> 就会<ul>
+<li>从 <code>META-INF/spring.factories</code> 加载可能用到的自动配置类</li>
+<li>去重，并将exclude和excludeName携带的类排除</li>
+<li>过滤，<code>@ConditionOnXXX</code></li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/03/10/SpringBoot/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://supermoonie.github.io/2021/11/19/elasticsearch/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -238,31 +996,14 @@
 </li>
 <li><p>解压</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf elasticsearch-6.5.4.tar.gz</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>配置</p>
-<blockquote>
-<p>config/elasticsearch.yml</p>
-</blockquote>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">network.host:</span> <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>config/jvm.options</p>
-</blockquote>
-<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># network.host 如果不是localhost 或者 127.0.0.1，会默认为生产环境，对环境要求较高。机器内存较大不需要修改</span></span><br><span class="line"><span class="attr">-Xms1g</span></span><br><span class="line"><span class="attr">-Xmx1g</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>/etc/sysctl.conf</p>
-</blockquote>
-<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">vm.max_map_count</span>=<span class="string">655360</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使上面的配置生效</span></span><br><span class="line">sysctl -p</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><p>常见错误：</p>
-<blockquote>
-<p>ERROR: [1] bootstrap checks failed<br>[1]: max file descriptors [65535] for elasticsearch process is too low, increase to at least [65536]</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/security/limits.conf</span><br></pre></td></tr></table></figure>
-<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">*</span> <span class="string">soft nofile 65536</span></span><br><span class="line"><span class="meta">*</span> <span class="string">hard nofile 65536</span></span><br><span class="line"><span class="meta">*</span> <span class="string">soft nproc 2048</span></span><br><span class="line"><span class="meta">*</span> <span class="string">hard nproc 4096</span></span><br></pre></td></tr></table></figure>
-<p>重新登录后生效</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/11/19/elasticsearch/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -355,306 +1096,11 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://supermoonie.github.io/2020/04/27/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%94%9F%E6%88%90%E7%AE%97%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="supermoonie">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="supermoonie的笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/04/27/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%94%9F%E6%88%90%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">伪随机数生成算法</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-04-27 12:27:26" itemprop="dateCreated datePublished" datetime="2020-04-27T12:27:26+08:00">2020-04-27</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="伪随机数生成算法"><a href="#伪随机数生成算法" class="headerlink" title="伪随机数生成算法"></a>伪随机数生成算法</h1><h2 id="线性同余法（linear-congruential-generator-LCG）"><a href="#线性同余法（linear-congruential-generator-LCG）" class="headerlink" title="线性同余法（linear congruential generator, LCG）"></a>线性同余法（linear congruential generator, LCG）</h2><script type="math/tex; mode=display">
- X_{(n+1)} = (aX_n + c) \bmod m</script>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/04/27/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%94%9F%E6%88%90%E7%AE%97%E6%B3%95/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://supermoonie.github.io/2020/04/27/hexo/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="supermoonie">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="supermoonie的笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/04/27/hexo/" class="post-title-link" itemprop="url">hexo</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-04-27 07:41:44" itemprop="dateCreated datePublished" datetime="2020-04-27T07:41:44+08:00">2020-04-27</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/blog/" itemprop="url" rel="index"><span itemprop="name">blog</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="特殊字符编码"><a href="#特殊字符编码" class="headerlink" title="特殊字符编码"></a>特殊字符编码</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">- &amp;#45; &amp;minus; 减号</span><br><span class="line">! &amp;#33; 感叹号</span><br><span class="line">" &amp;#34; &amp;quot; 双引号</span><br><span class="line"><span class="comment"># &amp;#35; 井号</span></span><br><span class="line">$ &amp;#36; 美元符号</span><br><span class="line">% &amp;#37; 百分号</span><br><span class="line">&amp; &amp;#38; &amp;amp; &amp;</span><br><span class="line">' &amp;#39; 单引号</span><br><span class="line">( &amp;#40; 左小括号</span><br><span class="line">) &amp;#41; 右小括号</span><br><span class="line">* &amp;#42; 星号</span><br><span class="line">+ &amp;#43; 加号</span><br><span class="line">&lt; &amp;#60; &amp;lt; 左尖括号</span><br><span class="line">= &amp;#61; 等号</span><br><span class="line">&gt; &amp;#62; &amp;gt; 右尖括号</span><br><span class="line">? &amp;#63; 问好</span><br><span class="line">@ &amp;#64; at</span><br><span class="line"><span class="section">[ &amp;#91; 左中括号</span></span><br><span class="line"><span class="section">\ &amp;#92; 反斜线</span></span><br><span class="line">] &amp;#93; 右中括号</span><br><span class="line">&#123; &amp;#123; 坐大括号</span><br><span class="line">| &amp;#124; 竖线</span><br><span class="line">&#125; &amp;#125; 右大括号</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://supermoonie.github.io/2020/04/20/%E7%AE%97%E6%B3%95%E5%AF%BC%E8%AE%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="supermoonie">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="supermoonie的笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/04/20/%E7%AE%97%E6%B3%95%E5%AF%BC%E8%AE%BA/" class="post-title-link" itemprop="url">算法导论</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-04-20 17:41:44" itemprop="dateCreated datePublished" datetime="2020-04-20T17:41:44+08:00">2020-04-20</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="第一部分-基础知识"><a href="#第一部分-基础知识" class="headerlink" title="第一部分 基础知识"></a>第一部分 基础知识</h2><h3 id="第-2-章-算法基础"><a href="#第-2-章-算法基础" class="headerlink" title="第 2 章 算法基础"></a>第 2 章 算法基础</h3><h4 id="2-1-插入排序"><a href="#2-1-插入排序" class="headerlink" title="2.1 插入排序"></a>2.1 插入排序</h4><p><img src="https://assets-1253328229.cos.ap-shanghai.myqcloud.com/assets/algorithm_introduction_02.png" alt="algorithm_introduction_02"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/04/20/%E7%AE%97%E6%B3%95%E5%AF%BC%E8%AE%BA/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://supermoonie.github.io/2020/04/17/Redis%E5%BC%80%E5%8F%91%E4%B8%8E%E8%BF%90%E7%BB%B4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="supermoonie">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="supermoonie的笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/04/17/Redis%E5%BC%80%E5%8F%91%E4%B8%8E%E8%BF%90%E7%BB%B4/" class="post-title-link" itemprop="url">Redis开发与运维</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-04-17 22:37:20" itemprop="dateCreated datePublished" datetime="2020-04-17T22:37:20+08:00">2020-04-17</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E7%BB%84%E4%BB%B6/" itemprop="url" rel="index"><span itemprop="name">分布式组件</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="一、初识Redis"><a href="#一、初识Redis" class="headerlink" title="一、初识Redis"></a>一、初识Redis</h2><h3 id="1-1-Redis特性"><a href="#1-1-Redis特性" class="headerlink" title="1.1 Redis特性"></a>1.1 Redis特性</h3><ul>
-<li>速度快：10万/秒</li>
-<li>基于键值对的数据结构服务器</li>
-<li>丰富的功能</li>
-<li>简单稳定</li>
-<li>客户端语言多</li>
-<li>持久化：RDB 和 AOF</li>
-<li>主从复制</li>
-<li>高可用和分布式
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/04/17/Redis%E5%BC%80%E5%8F%91%E4%B8%8E%E8%BF%90%E7%BB%B4/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
 
 
 
@@ -719,7 +1165,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -732,7 +1178,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">19</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -759,7 +1205,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
